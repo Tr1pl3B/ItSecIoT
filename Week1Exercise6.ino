@@ -25,7 +25,7 @@ void runExperiment(BlockCipher *cipher, uint8_t size) {
 
     
 
-    // Generate random key and IV
+    // Generate random key
     generateRandomPlaintext(key, size);
 
     // Measure encryption time
