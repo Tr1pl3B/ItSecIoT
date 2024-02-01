@@ -19,7 +19,6 @@ AES256 aes256;
 void runExperiment(BlockCipher *cipher, uint8_t size) {
     uint8_t plaintext[16]; // Assuming 128-bit block size
     uint8_t key[32]; // Maximum key size for AES-256
-    uint8_t iv[16]; // Initialization Vector
     uint8_t ciphertext[16];
     uint8_t decrypted[16];
 
