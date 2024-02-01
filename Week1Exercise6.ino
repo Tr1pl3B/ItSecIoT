@@ -16,7 +16,7 @@ AES128 aes128;
 AES192 aes192;
 AES256 aes256;
 
-void runExperiment(BlockCipher *cipher) {
+void runExperiment(BlockCipher *cipher, uint8_t size) {
     uint8_t plaintext[16]; // Assuming 128-bit block size
     uint8_t key[32]; // Maximum key size for AES-256
     uint8_t iv[16]; // Initialization Vector
@@ -26,8 +26,7 @@ void runExperiment(BlockCipher *cipher) {
     
 
     // Generate random key and IV
-    generateRandomPlaintext(key, sizeof(key));
-    generateRandomPlaintext(iv, sizeof(iv));
+    generateRandomPlaintext(key, size);
 
     // Measure encryption time
     unsigned long encryptionTime = 0;
@@ -67,11 +66,11 @@ void setup() {
     Serial.begin(9600);
     Serial.println();
     Serial.println("AES128");
-    runExperiment(&aes128);
+    runExperiment(&aes128,16);
     Serial.println("AES192");
-    runExperiment(&aes192);
+    runExperiment(&aes192,24);
     Serial.println("AES256");
-    runExperiment(&aes256);
+    runExperiment(&aes256,32);
 }
 
 void loop() {
