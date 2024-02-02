@@ -6,10 +6,10 @@
 #include <GCM.h>
 #include <XTS.h>
 
-#define NUM_RUNS 5
+#define NUM_RUNS 100
 
 // Define plaintext sizes to test
-const size_t plaintextSizes[] = {1024, 2048};
+const size_t plaintextSizes[] = {1024, 2048, 4096, 8192};
 
 void generateRandomPlaintext(uint8_t* plaintext, size_t size) {
    for (size_t i = 0; i < size; i++) {
@@ -84,6 +84,8 @@ void runExperiment(Cipher *cipher, uint8_t keySize) {
             uint8_t plaintext[textSize];
             generateRandomPlaintext(plaintext, textSize);
 
+
+            crypto_feed_watchdog();
             // Encryption
             uint8_t ciphertext[textSize];
             unsigned long startTime = micros();
@@ -92,6 +94,7 @@ void runExperiment(Cipher *cipher, uint8_t keySize) {
             unsigned long endTime = micros();
             encryptionTime += (endTime - startTime);
 
+            crypto_feed_watchdog();
             // Decryption
             uint8_t decrypted[textSize];
             startTime = micros();
