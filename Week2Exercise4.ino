@@ -6,7 +6,7 @@
 #include <GCM.h>
 #include <XTS.h>
 
-#define NUM_RUNS 1
+#define NUM_RUNS 5
 
 // Define plaintext sizes to test
 const size_t plaintextSizes[] = {1024, 2048};
@@ -119,6 +119,7 @@ void runExperiment(Cipher *cipher, uint8_t keySize) {
 }
 
 void setup() {
+  wdt_disable();
    Serial.begin(9600);
    Serial.println();
    Serial.println();
