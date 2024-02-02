@@ -9,7 +9,7 @@
 #define NUM_RUNS 100
 
 // Define plaintext sizes to test
-const size_t plaintextSizes[] = {1024, 2048, 4096, 8192};
+const size_t plaintextSizes[] = {1024, 2048, 4096};
 
 void generateRandomPlaintext(uint8_t* plaintext, size_t size) {
    for (size_t i = 0; i < size; i++) {
@@ -45,6 +45,7 @@ void encryptChunks(Cipher *cipher, uint8_t *plaintext, size_t textSize, uint8_t 
 
   for (size_t i = 0; i < numChunks; i++) {
     cipher->encrypt(ciphertext + i * chunkSize, plaintext + i * chunkSize, chunkSize);
+    crypto_feed_watchdog();
   }
 }
 
@@ -53,6 +54,7 @@ void decryptChunks(Cipher *cipher, uint8_t *ciphertext, size_t textSize, uint8_t
 
   for (size_t i = 0; i < numChunks; i++) {
     cipher->decrypt(decrypted + i * chunkSize, ciphertext + i * chunkSize, chunkSize);
+    crypto_feed_watchdog();
   }
 }
 
@@ -94,7 +96,6 @@ void runExperiment(Cipher *cipher, uint8_t keySize) {
             unsigned long endTime = micros();
             encryptionTime += (endTime - startTime);
 
-            crypto_feed_watchdog();
             // Decryption
             uint8_t decrypted[textSize];
             startTime = micros();
@@ -102,6 +103,7 @@ void runExperiment(Cipher *cipher, uint8_t keySize) {
             decryptChunks(cipher, ciphertext, textSize, decrypted);
             endTime = micros();
             decryptionTime += (endTime - startTime);
+            crypto_feed_watchdog();
         }
        }
 
