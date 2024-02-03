@@ -9,7 +9,7 @@
 #define NUM_RUNS 100
 
 // Define plaintext sizes to test
-const size_t plaintextSizes[] = {1024, 2048, 4096};
+const size_t plaintextSizes[] = {1024, 2048, 4096, 8192};
 
 void generateRandomPlaintext(uint8_t* plaintext, size_t size) {
    for (size_t i = 0; i < size; i++) {
@@ -81,7 +81,6 @@ void runExperiment(Cipher *cipher, uint8_t keySize) {
            // Generate random key
            generateRandomByte(key, keySize);
 
-          for(size_t textSize : plaintextSizes){
             // Generate random plaintext
             uint8_t plaintext[textSize];
             generateRandomPlaintext(plaintext, textSize);
@@ -104,7 +103,7 @@ void runExperiment(Cipher *cipher, uint8_t keySize) {
             endTime = micros();
             decryptionTime += (endTime - startTime);
             crypto_feed_watchdog();
-        }
+        
        }
 
        // Generate output for the current plaintext size
