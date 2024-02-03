@@ -9,21 +9,16 @@
 #define NUM_RUNS 100
 
 // Define plaintext sizes to test
-const size_t plaintextSizes[] = {1024, 2048, 4096, 8192};
+const size_t plaintextSizes[] = {1024, 2048, 4096, 8192, 16384}; //Here you can add/ remove the plaintextSizes that are to be tested
 
-void generateRandomPlaintext(uint8_t* plaintext, size_t size) {
-   for (size_t i = 0; i < size; i++) {
-       plaintext[i] = random(256);
-   }
-}
-
+//generating the random Bytes in various sizes
 void generateRandomByte(uint8_t* plaintext, size_t size) {
    for (size_t i = 0; i < size; i++) {
        plaintext[i] = random(256);
    }
 }
 
-// Declare cipher instances for different key sizes
+// Declare cipher modes for different key sizes
 CTR<AES128> ctrAes128;
 CTR<AES192> ctrAes192;
 CTR<AES256> ctrAes256;
@@ -36,9 +31,9 @@ GCM<AES128> gcmAes128;
 GCM<AES192> gcmAes192;
 GCM<AES256> gcmAes256;
 
-const size_t chunkSize = 1024; // Adjust as needed
+const size_t chunkSize = 1024; //defines the size of chunks to enqrypt
 
-
+//here the plane text gets divided into the correct chunk size and enqrypted chunk by chunk
 void encryptChunks(Cipher *cipher, uint8_t *plaintext, size_t textSize, uint8_t *ciphertext) {
   size_t numChunks = textSize / chunkSize;
   size_t remainingBytes = textSize % chunkSize;
@@ -49,6 +44,7 @@ void encryptChunks(Cipher *cipher, uint8_t *plaintext, size_t textSize, uint8_t 
   }
 }
 
+//here the plane text gets divided into the correct chunk size and decrypted chunk by chunk
 void decryptChunks(Cipher *cipher, uint8_t *ciphertext, size_t textSize, uint8_t *decrypted) {
   size_t numChunks = textSize / chunkSize;
 
@@ -83,11 +79,11 @@ void runExperiment(Cipher *cipher, uint8_t keySize) {
 
             // Generate random plaintext
             uint8_t plaintext[textSize];
-            generateRandomPlaintext(plaintext, textSize);
+            generateRandomByte(plaintext, textSize);
 
 
             crypto_feed_watchdog();
-            // Encryption
+            // measure encryption time
             uint8_t ciphertext[textSize];
             unsigned long startTime = micros();
             cipher->setKey(key, sizeof(key));
@@ -95,7 +91,7 @@ void runExperiment(Cipher *cipher, uint8_t keySize) {
             unsigned long endTime = micros();
             encryptionTime += (endTime - startTime);
 
-            // Decryption
+            // measure decryption time
             uint8_t decrypted[textSize];
             startTime = micros();
             cipher->setKey(key, sizeof(key));
