@@ -40,7 +40,7 @@ void encryptChunks(Cipher *cipher, uint8_t *plaintext, size_t textSize, uint8_t 
 
   for (size_t i = 0; i < numChunks; i++) {
     cipher->encrypt(ciphertext + i * chunkSize, plaintext + i * chunkSize, chunkSize);
-    // crypto_feed_watchdog();
+    crypto_feed_watchdog();
   }
 }
 
@@ -50,7 +50,7 @@ void decryptChunks(Cipher *cipher, uint8_t *ciphertext, size_t textSize, uint8_t
 
   for (size_t i = 0; i < numChunks; i++) {
     cipher->decrypt(decrypted + i * chunkSize, ciphertext + i * chunkSize, chunkSize);
-    // crypto_feed_watchdog();
+    crypto_feed_watchdog();
   }
 }
 
@@ -82,7 +82,7 @@ void runExperiment(Cipher *cipher, uint8_t keySize) {
             generateRandomByte(plaintext, textSize);
 
 
-            // crypto_feed_watchdog();
+            crypto_feed_watchdog();
             // measure encryption time
             uint8_t ciphertext[textSize];
             unsigned long startTime = micros();
